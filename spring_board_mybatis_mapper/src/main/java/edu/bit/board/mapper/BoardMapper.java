@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import edu.bit.board.page.Criteria;
 import edu.bit.board.vo.BoardVO;
 
 //VO또는 DTO를 보고 만든다.
@@ -25,7 +26,7 @@ public interface BoardMapper {//이게 영속계층
 	public BoardVO selectBoardOne(String bId);
 	
 	@Select("select count(*) from mvc_board")
-	public int selectAllBoard();
+	public int selectCountBoard();//자기가 알아서 int로 반환함.
 	
 	@Select("update mvc_board set bName = #{boardVO.bName}, bTitle = #{boardVO.bTitle}, bContent = #{boardVO.bContent} where bId = #{boardVO.bId}")
 	public void updateBoard(@Param("boardVO")BoardVO boardVO);//하나만 있기때문에 위의 코드에서 boardVO를 지우거나 @Param을 적어야함.
@@ -38,6 +39,9 @@ public interface BoardMapper {//이게 영속계층
 
 	@Delete("delete from mvc_board where bId = #{boardVO.bId}")
 	public void delete(@Param("boardVO")BoardVO boardVO);
+	
+	
+	public List<BoardVO> selectBoardListPage(Criteria criteria);
 	
 	
 }

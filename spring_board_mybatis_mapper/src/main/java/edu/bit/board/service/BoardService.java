@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.bit.board.mapper.BoardMapper;
+import edu.bit.board.page.Criteria;
 import edu.bit.board.vo.BoardVO;
 
 @Service
@@ -48,6 +49,15 @@ public class BoardService {
 	public void delete(BoardVO boardVO) {
 		boardMapper.delete(boardVO);
 		
+	}
+
+	public int selectCountBoard() {//int로 가져와야하니 리턴값 보이드아님
+		return boardMapper.selectCountBoard();
+	}
+
+	public List<BoardVO> selectBoardListPage(Criteria criteria) {
+		
+		return boardMapper.selectBoardListPage(criteria);
 	}
 }
 

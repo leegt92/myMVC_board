@@ -1,5 +1,7 @@
 package edu.bit.board.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import edu.bit.board.page.Criteria;
+import edu.bit.board.page.PageMaker;
 import edu.bit.board.service.BoardService;
 import edu.bit.board.vo.BoardVO;
 
@@ -22,7 +26,7 @@ public class BoardController {
 		System.out.println("list()");
 		
 		model.addAttribute("list",boardService.selectBoardList());
-		System.out.println("");
+		
 		return "list";
 	}
 	
@@ -81,6 +85,35 @@ public class BoardController {
 		
 		boardService.delete(boardVO);//답변 다는데 쿼리가 2개들어감. 스텝을 1씩 증가시켜주는것 하나,
 		return "redirect:list";			//내가 쓴 답변이 들어가는 인서트 하나.
+	}
+	
+	@RequestMapping("/list2")//페이징처리된리스트
+	public String list2(Criteria criteria, Model model) {
+		System.out.println("list2()");
+		
+		PageMaker pageMaker = new PageMaker();//pageMaker 객체 생성해서
+		pageMaker.setCri(criteria);//그 안에 criteria를 넣었음.
+		
+		System.out.println(criteria.getPerPageNum());
+		System.out.println(criteria.getPage());
+		
+		int totalCount = boardService.selectCountBoard();
+		System.out.println("전체 게시물 수: "+totalCount);
+		
+		//전체 값 세팅 이걸 하면 pageMaker에 있는 변수 11개에 전부 셋팅함.
+		pageMaker.setTotalCount(totalCount);
+		
+		List<BoardVO> boardList = boardService.selectBoardListPage(criteria);
+		//예전엔 리스트에 있는거 다가져왔지만 지금은 한 페이지에 들어가는것만큼 가져와야함
+		//그럴려면 먼저 DB에 저장되있는걸 가져와야함. 처음 설정한 10개씩보여주는대로 10개 가져와야함
+		//가장 최근부터 10개
+		
+		model.addAttribute("list",boardList);
+		model.addAttribute("pageMaker",pageMaker);
+		
+		return "list2";
+		
+		//Criteria criteria 를 어디서 갖고오는가. 
 	}
 
 }
