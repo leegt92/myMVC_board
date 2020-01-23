@@ -43,7 +43,17 @@ public class BoardController {
 		 *	return "redirect:/";
 		 */
 		
-		return "list";
+		return "list";//servlet-context.xml 내부의 
+		/*
+		 * <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		 * <beans:property name="prefix" value="/WEB-INF/views/" />
+		 * <beans:property name="suffix" value=".jsp" />
+		 * </beans:bean>
+		 * 에 의해 list의 앞에는 WEB-INF/views/가 들어가고, 뒤에는 .jsp가 들어간다.
+		 * 그 결과  WEB-INF/views/list.jsp 가 된다.
+		 * url은 컨트롤러를 따라 board/board/list이다.
+		 */
+		
 	}
 	
 	@RequestMapping("/write_view")
