@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +15,33 @@ import edu.bit.board.page.Criteria;
 import edu.bit.board.page.PageMaker;
 import edu.bit.board.service.BoardService;
 import edu.bit.board.vo.BoardVO;
+import edu.bit.board.vo.UserVO;
 
 @Controller
+@RequestMapping("/board")
 public class BoardController {
 	
 	@Inject
 	BoardService boardService;
 	
 	@RequestMapping("/list")
-	public String list(Model model) {
+	public String list(Model model, HttpSession session) {
 		System.out.println("list()");
 		
 		model.addAttribute("list",boardService.selectBoardList());
+		
+		/*
+		 * //첫번째 방법. 그러니 이 방법을 쓰려면 모든 메소드에 이 방법을 집어넣어야 한다.
+		 * //메소드 추가하면 이것도 다시 추가해야함. 이제인터셉터 써보겠음. 
+		 * UserVO member = (UserVO)session.getAttribute("member");
+		 *  if(member ==null) {
+		 *   
+		 *   System.out.println("멤버세션값 없음");
+		 *   
+		 *   }
+		 *   
+		 *	return "redirect:/";
+		 */
 		
 		return "list";
 	}

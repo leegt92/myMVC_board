@@ -36,4 +36,6 @@
 	<!-- 	Mapper Interface -->
 	<mybatis-spring:scan base-package="edu.bit.board.mapper"/> 
 	
+	
+	
 </beans>
